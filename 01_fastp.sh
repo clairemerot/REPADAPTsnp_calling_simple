@@ -1,9 +1,17 @@
 #!/bin/bash
+#SBATCH -J "fastp"
 #SBATCH --time=0-6:00
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=1G
-#SBATCH --account=def-yeaman
-#SBATCH --array=1-83
+#SBATCH -p=ecobio
+#SBATCH --array=1-2
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=claire.merot@univ-rennes.fr
+
+
+
+. /local/env/envconda.sh
+conda activate apptainer
 
 
 ### THESE LISTS NEED TO FOLLOW THE SAME ORDER
@@ -13,7 +21,8 @@ OUTPUT1=$(sed -n "${SLURM_ARRAY_TASK_ID}p" list3.txt) ### A list of R1 output na
 OUTPUT2=$(sed -n "${SLURM_ARRAY_TASK_ID}p" list4.txt) ### A list of R2 output names -- just capture the meaningful part of the fastq names including R2 (remove the fq.gz or fq suffix)
 
 ###### CHANGE THE LINE OF CODE BELOW TO LOAD THE CORRECT VERSION OF FASTP IN YOUR MACHINE/SERVER  = fastp v.0.20.1
-module load fastp
+#module load fastp
+singularity run https://depot.galaxyproject.org/singularity/fastp:0.20.1--h8b12597_0
 
 ### Trimming --  for each sample pair of raw fastq reads or for each library, we produce a pair of trimmed output files. 
 ### Remember to keep R1 and R2 in the output names created in lists 3 and 4 above
