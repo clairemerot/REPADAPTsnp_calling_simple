@@ -1,0 +1,8 @@
+*.bams
+**/*.bams
+**/*.fastq.gz
+log_*
+list*.txt
+*.out
+fastp.html
+fastp.json
